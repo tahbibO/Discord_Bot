@@ -1,2 +1,2 @@
 # Discord_Bot
-Checks product availibity of a product on BestBuy.ca
+Checks product availability of a product on BestBuy.ca
