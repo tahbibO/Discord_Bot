@@ -1,12 +1,9 @@
 # bot.py
 import os
 import discord
-from discord import embeds
-from discord.gateway import DiscordClientWebSocketResponse
 from dotenv import load_dotenv
 from selenium import webdriver
 from discord.ext import commands
-import time
 import asyncio
 from discord.ext import tasks
 
@@ -72,7 +69,7 @@ async def check(ctx, link):
     response.description = description
 
 
-
+    print('created embed and done some checking')
     if elem.text == "Available to ship":
         response.color = discord.Color.from_rgb(158, 206, 154)
         await ctx.send(content=ctx.author.mention+" "+f"**{'Available to ship'}**",embed=response)
@@ -80,7 +77,6 @@ async def check(ctx, link):
         response.color = discord.Color.from_rgb(178, 13, 48)
         await ctx.send(content=ctx.author.mention+" "+f"**{'Not available to ship'}**",embed=response)
     
-    await asyncio.sleep(0.01)
     print("check called")
 
 
@@ -91,7 +87,7 @@ async def on_command_error(ctx,error):
     response.description = "Command not entered properly. Type `$help` to show a list of all commands and how to use them"
     response.color = discord.Color.from_rgb(178, 13, 48)
     await ctx.send(embed=response)
-    await asyncio.sleep(0.01)
+
 
 
 
@@ -108,7 +104,6 @@ async def track(ctx,link):
         response.description = "Command not entered properly. Type `$help` to show a list of all commands and how to use them"
         response.color = discord.Color.from_rgb(178, 13, 48)
         await ctx.send(embed=response)
-        await asyncio.sleep(0.01)
     print("track called")
     
 @bot.command(name = 'help')
@@ -126,7 +121,7 @@ async def help(ctx):
     print("help called")
 
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=20)
 async def trackProduct():
     print("updating tracking List")
     browser.delete_all_cookies()
@@ -153,7 +148,6 @@ async def trackProduct():
         if elem.text == "Available to ship":
             await bot.get_channel(p.channel).send(content=p.author.mention+f'**{"Available to ship"}**',embed=response)
             products.remove(p)
-        await asyncio.sleep(0.01)
     print("finished updating tracking list")
     pass
 
